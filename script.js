@@ -1,5 +1,7 @@
 function learnMore(){
     
+    
+    //helloooooooooooooooo
     var searchtext=document.getElementById("text");
     var details=document.getElementById("details");
     // set up a request
