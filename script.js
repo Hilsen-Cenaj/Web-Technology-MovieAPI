@@ -1,7 +1,8 @@
-function learnMore(){
-    
+function learnMore(){    
     
     //helloooooooooooooooo
+
+    //new comment
     var searchtext=document.getElementById("text");
     var details=document.getElementById("details");
     // set up a request
