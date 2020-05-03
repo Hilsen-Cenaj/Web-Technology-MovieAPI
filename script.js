@@ -1,7 +1,7 @@
+var searchtext=document.getElementById("text");
+var details=document.getElementById("details");
 function learnMore(){
     
-    var searchtext=document.getElementById("text");
-    var details=document.getElementById("details");
     // set up a request
 	var request = new XMLHttpRequest();
     // keep track of the request
@@ -9,12 +9,12 @@ function learnMore(){
     // check if the response data send back to us 
     if(request.readyState === 4) {
         // add a border
-        details.style.border = '3px solid #000000';
+        details.style.border = '1px solid #000000';
+        details.style.background="rgba(24, 24, 24, 0.055)"
         // check if the request is successful
         if(request.status === 200) {
             // update the HTML of the element
-            var text=JSON.parse(request.responseText);
-            details.innerHTML = text.Title+" "+ text.Poster;        
+            updateDetails(request);
         }
         else {
             // otherwise display an error message
@@ -24,8 +24,25 @@ function learnMore(){
 }
     
     var url="http://www.omdbapi.com/?apikey=edde99b1&t="+searchtext.value;
-    console.log(url);
+    console.log("GET URL: "+url);
     request.open("GET",url);
     request.send();
     
+}
+
+function updateDetails(request){
+    var text=JSON.parse(request.responseText);
+    if(text.Title!==undefined){
+        details.innerHTML = text.Title;
+        /*Adding Poster*/
+        var poster=document.createElement("IMG");
+        poster.setAttribute("src", text.Poster);
+        details.appendChild(poster);
+    }else if(searchtext.value===""){
+        details.style.border = 'none';
+        details.style.background="none";
+        details.innerHTML=""
+    }else{
+        details.innerHTML="Sorry , There are no results for \" "+searchtext.value+" \"";
+    }
 }
