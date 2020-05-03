@@ -1,5 +1,5 @@
 function learnMore(){
-    
+    //new comment
     var searchtext=document.getElementById("text");
     var details=document.getElementById("details");
     // set up a request
