@@ -1,8 +1,10 @@
+
 window.onload = function(){
     document.getElementById("moreBtn").addEventListener("click", moreBtnClick);
 };
 
-var searchtext=document.getElementById("text");
+var searchtext=document.getElementById("searchbar");
+
 var details=document.getElementById("details");
 var moreBtn;
 var active=false;
@@ -52,10 +54,13 @@ function updateDetails(request){
         /*Addind More button*/
         moreBtn.style.display = "block";
         details.appendChild(moreBtn);
+
         
         /*Adding Poster*/
         var poster=document.createElement("IMG");
+
         poster.setAttribute("src", text.Poster);
+        
         details.appendChild(poster);
     }else if(searchtext.value===""){
         details.style.border = 'none';
