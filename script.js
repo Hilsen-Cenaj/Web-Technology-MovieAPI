@@ -34,9 +34,12 @@ function updateDetails(request){
     var text=JSON.parse(request.responseText);
     if(text.Title!==undefined){
         details.innerHTML = text.Title;
+        
         /*Adding Poster*/
         var poster=document.createElement("IMG");
+
         poster.setAttribute("src", text.Poster);
+        
         details.appendChild(poster);
     }else if(searchtext.value===""){
         details.style.border = 'none';
