@@ -1,4 +1,4 @@
-var searchtext=document.getElementById("text");
+var searchtext=document.getElementById("searchbar");
 var details=document.getElementById("details");
 function learnMore(){
     
