@@ -5,6 +5,43 @@ html{
     height: 100%;
 }
 
+.main-bar{
+    /*Bar attributes*/
+    width: 100%;
+    background-color: #3e474f;
+
+    /*Position*/
+    position: absolute;
+    display: block;
+    top: 0px;
+    left: 0;
+    right: 0;
+}
+
+.main-bar a{
+    /*Text*/
+    display: inline-block;
+    padding: 15px 17px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;
+
+    /*Position*/
+    margin-left: 40px;
+}
+
+.main-bar a:hover{
+    background-color: white;
+    border-radius: 10px;
+    color: #3e474f;
+    transition-duration: 0.5s;
+}
+
+.main-barRight{
+    float: right;
+}
+
 input[type=text]{
     /*Bar attributes*/
     width: 200px;
@@ -31,7 +68,6 @@ input[type=text]{
 
 /*Change box-shadow color and bar's width when focused*/
 input[type=text]:focus{
-    box-shadow: 1px 1px 5px #3F00FF;
     width:550px;
 }
 
@@ -45,9 +81,22 @@ input[type=text]:focus{
     /*Text*/
     word-wrap: break-word;
     text-align: center;
+
     /*Box Attributes*/
     margin:20px;
     padding:20px;
     max-width: 100%;
 }
 
+img{
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#moreBtn{
+    display: none;
+    margin-left: auto;
+    margin-right: auto;
+}

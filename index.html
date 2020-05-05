@@ -10,10 +10,22 @@
     </head>
     
     <body>
+        <div class="main-bar">
+            <a title="HomePage" href="index.html">Home</a>
+
+            <div class="main-barRight">
+                <a href="index.html">Bookmarks</a>
+                <a href="index.html">Create Account</a>
+                <a id="login" href="index.html">Login</a>
+            </div>
+        </div>
         <div id="container">
             <input id="text" type="text" placeholder="Search..." name="Search" onkeyup="learnMore()">
             
-            <div id="details"></div>
+            <div id="details">
+                <button id="moreBtn">Περισσότερα</button>
+            </div>
+            
         </div>
         <script src="script.js" type="text/javascript"></script>
 
