@@ -119,12 +119,18 @@ function printJSON(request){
             content.innerHTML+="<b>"+j+"</b>"+": "+jsontext[j]+"<br>";
         }
     }
+    //Adding Full Plot 
     content.innerHTML+="<b>Plot: </b>"+jsontext.Plot;
-}
-var image=document.getElementById("myImage");
-if(image){
-    image.onerror= function(){
-        console.log("jdajfdijdias");
-    
+
+    //Adding Rattings
+    var ratings=jsontext["Ratings"];
+    if(ratings.length!==0){
+        content.innerHTML+="<br><b>Ratings: </b><br>";
+        ratings.forEach(element => {
+            for(i in element){
+                content.innerHTML+="<b>"+i+"</b>"+": "+element[i]+" ";
+            }
+            content.innerHTML+="<br>";
+        });
     }
 }
