@@ -2,7 +2,8 @@ var searchtext=document.getElementById("searchbar");
 var details=document.getElementById("details");
 var text;
 
-function learnMore(){
+
+function learnMore(myFunction,fullplot=false){
     
     // set up a request
 	var request = new XMLHttpRequest();
@@ -16,7 +17,7 @@ function learnMore(){
             // check if the request is successful
             if(request.status === 200) {
                 // update the HTML of the element
-                updateDetails(request);
+                myFunction(request);
             }
             else {
                 // otherwise display an error message
@@ -26,6 +27,9 @@ function learnMore(){
     }
     
     var url="http://www.omdbapi.com/?apikey=edde99b1&t="+searchtext.value;
+
+    //Adding plot=full on parameters if fullplot=true
+    if(fullplot) url+="&plot=full";
     console.log("GET URL: "+url);
     request.open("GET",url);
     request.send();
@@ -66,9 +70,12 @@ function updateDetails(request){
         /*Adding Poster*/
         if(text.Poster!=="N/A"){
         var poster=document.createElement("IMG");
-
-        poster.setAttribute("src", text.Poster);
         
+        poster.setAttribute("src", text.Poster);
+        /*Errors when load the poster*/
+        poster.onerror= function(){
+            poster.alt="Error: could not load poster"
+        }
         details.appendChild(poster);
         }
     }else if(searchtext.value===""){
@@ -90,7 +97,8 @@ function moreBtnClick(){
     var moreBtn=document.getElementById("moreBtn");
     if(!active){
         moreBtn.innerHTML = "Less";
-        printJSON(document.getElementById("content"),text)
+        //Call learnMore with function : printJSON , and fullplot=true
+        learnMore(printJSON,true);
         active = true;
     }else{
         moreBtn.innerHTML = "More";
@@ -100,11 +108,23 @@ function moreBtnClick(){
     }
 }
 
-function printJSON(content,jsontext){
-    content.innerHTML="";
+function printJSON(request){
+    
+    var jsontext=JSON.parse(request.responseText);
+    var content=document.getElementById("content");
+    content.innerHTML=""; //Clear Content
     for(j in jsontext){
-        if(jsontext[j]!=="N/A" && j!=="Poster"){
+        //Exclude Everything with N/A , Poster , Response , Ratings ,Title , Plot
+        if(jsontext[j]!=="N/A" && j!=="Poster" && j!=="Response" && j!="Ratings" &&j!=="Title" && j!=="Plot" ){
             content.innerHTML+="<b>"+j+"</b>"+": "+jsontext[j]+"<br>";
         }
+    }
+    content.innerHTML+="<b>Plot: </b>"+jsontext.Plot;
+}
+var image=document.getElementById("myImage");
+if(image){
+    image.onerror= function(){
+        console.log("jdajfdijdias");
+    
     }
 }
