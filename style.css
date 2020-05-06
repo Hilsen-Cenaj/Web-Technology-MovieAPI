@@ -1,8 +1,8 @@
-html{
+html,body{
     font-family: Arial, Helvetica, sans-serif;
-    margin:50px;
     font-size: 18px;
     height: 100%;
+    margin: 0;
 }
 
 .main-bar{
@@ -11,13 +11,16 @@ html{
     background-color: #3e474f;
 
     /*Position*/
-    position: absolute;
-    display: block;
-    top: 0px;
-    left: 0;
-    right: 0;
+    display:flex;
+    flex-flow: row wrap;
+    margin:0;
+    justify-content:flex-end;/*all buttons right*/
 }
-
+/*Only Home button left*/
+#homepage{
+    margin-right:auto;
+}
+/*Decorate links*/
 .main-bar a{
     /*Text*/
     display: inline-block;
@@ -25,10 +28,7 @@ html{
     font-size: 20px;
     font-weight: 600;
     text-decoration: none;
-    color: white;
-
-    /*Position*/
-    margin-left: 40px;
+    color: white;   
 }
 
 .main-bar a:hover{
@@ -38,18 +38,13 @@ html{
     transition-duration: 0.5s;
 }
 
-.main-barRight{
-    float: right;
-}
-
-
 /*Search bar*/
 #searchbar{
 
     /*Bar attributes*/
     width: 200px;
     max-width: 100%;
-    height: 30px;
+    height: 40px;
     border-radius: 20px;
     border: none;
     box-shadow: 1px 1px 5px grey;
@@ -70,7 +65,6 @@ html{
 }
 
 /*Change box-shadow color and bar's width when focused*/
-
 #searchbar:focus{
     box-shadow: 1px 1px 5px #3F00FF;
     width:550px;
@@ -80,13 +74,14 @@ html{
 #container{
    display:flex;
    flex-flow:column;
+   padding:20px 0;
 }
 
 /*Text retrieved from search*/
 #details{
     /*Text*/
     word-wrap: break-word;
-    text-align: center;
+    
 
     /*Box Attributes*/
     margin:20px;
@@ -101,10 +96,13 @@ img{
     margin-right: auto;
 }
 
+/*Decorate more/less button*/
 #moreBtn{
-    display: none;
+    width:max-content;
+    background-color: rgba(255, 0, 21, 0.658);
+    /*Align right*/
+    margin-right:0;
     margin-left: auto;
-    margin-right: auto;
 }
 /*Center and width of wrapper*/
 .wrapper{
@@ -126,14 +124,11 @@ input{
     padding:15px;
     margin:10px 0;
     width:100%;
-    
     background-color: rgb(219, 219, 219);
     border:none;
 }
-
-#btn-login{
-    /*Button deacoration*/
-    background-color: #7289da;
+.button{
+    /*Button decoration*/
     box-shadow:1px 1px 5px grey;
     /*Position and size*/
     width:100%;
@@ -145,10 +140,13 @@ input{
     text-decoration: none;
     border:none;
     color:white;
-    
 }
-#btn-login:hover{
-    opacity: 0.8;
+/*Change colors of signup,login buttons*/
+.login{
+    background-color: #7289da;
+}
+.signup{
+    background-color: #72da77;
 }
 
 #btn-reset{
@@ -160,8 +158,19 @@ input{
     border:none;
     background-color: #99aab5;
 }
+.login:hover,.signup:hover,#btn-reset:hover{
+    opacity: 0.8;
+}
 
-#btn-reset:hover{
-    opacity:0.8;
+
+@media screen and (max-width: 600px){
+    .main-bar{
+        flex-flow:column wrap;
+        text-align: center;
+    }
+    /*Align with other items*/
+    #homepage{
+        margin-right: 0;
+    }
 
 }

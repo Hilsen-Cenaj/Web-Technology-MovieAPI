@@ -1,6 +1,6 @@
 var searchtext=document.getElementById("searchbar");
 var details=document.getElementById("details");
-
+var text;
 
 function learnMore(){
     
@@ -11,8 +11,8 @@ function learnMore(){
         // check if the response data send back to us 
         if(request.readyState === 4) {
             // add a border
-            details.style.border = '1px solid #000000';
-            details.style.background="rgba(24, 24, 24, 0.055)"
+            details.style.border = '1px solid rgb(160, 160, 160)';
+            details.style.borderRadius="8px"
             // check if the request is successful
             if(request.status === 200) {
                 // update the HTML of the element
@@ -33,16 +33,29 @@ function learnMore(){
 }
 
 function updateDetails(request){
-    var text=JSON.parse(request.responseText);
+    text=JSON.parse(request.responseText);
 
     if(text.Title!==undefined){
-        
-        details.innerHTML= text.Title + "<br>" + text.Plot + "<br>" + 
-        " <b>Release date:</b> " + text.Released + " <b>Duration:</b> " + text.Runtime +
-        " <b>Genre:</b> " + text.Genre + "<br>";
+        //Clear content before writing
+        details.innerHTML="";
 
+        //Build Title
+        var title=document.createElement("H2");
+        title.textContent=text.Title;
+        title.style.textAlign="center";
+        details.appendChild(title);
+
+        //Build Content
+        var content=document.createElement("P");
+        content.setAttribute("id","content")
+        content.innerHTML= " <b>Release date:</b> " + text.Released + " <br><b>Duration:</b> " + text.Runtime +
+        " <br><b>Genre:</b> " + text.Genre + "<br>" +text.Plot + "<br>" ;
+        content.style.textAlign="right";
+        details.appendChild(content);
+        
         /*Addind More button*/
         var moreBtn=document.createElement("BUTTON");
+        moreBtn.setAttribute("class","button");
         moreBtn.setAttribute("id","moreBtn");
         moreBtn.setAttribute("onclick","moreBtnClick()");
         moreBtn.innerHTML="More";
@@ -77,15 +90,21 @@ function moreBtnClick(){
     var moreBtn=document.getElementById("moreBtn");
     if(!active){
         moreBtn.innerHTML = "Less";
+        printJSON(document.getElementById("content"),text)
         active = true;
     }else{
         moreBtn.innerHTML = "More";
+        content.innerHTML= " <b>Release date:</b> " + text.Released + " <br><b>Duration:</b> " + text.Runtime +
+        " <br><b>Genre:</b> " + text.Genre + "<br>" +text.Plot + "<br>" ;
         active = false;
     }
 }
 
-function printJSON(jsontext){
+function printJSON(content,jsontext){
+    content.innerHTML="";
     for(j in jsontext){
-        details.innerHTML+=j+": "+jsontext[j]+"<br>";
+        if(jsontext[j]!=="N/A" && j!=="Poster"){
+            content.innerHTML+="<b>"+j+"</b>"+": "+jsontext[j]+"<br>";
+        }
     }
 }
