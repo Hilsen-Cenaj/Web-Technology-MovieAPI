@@ -1,15 +1,6 @@
-
-window.onload = function(){
-    document.getElementById("moreBtn").addEventListener("click", moreBtnClick);
-};
-
 var searchtext=document.getElementById("searchbar");
-
 var details=document.getElementById("details");
-var moreBtn;
-var active=false;
 
-moreBtn.style.display = "none";
 
 function learnMore(){
     
@@ -43,30 +34,37 @@ function learnMore(){
 
 function updateDetails(request){
     var text=JSON.parse(request.responseText);
-    moreBtn=document.getElementById("moreBtn");
 
     if(text.Title!==undefined){
-
-        details.innerHTML = text.Title + "<br>" + text.Plot + "<br>" + 
+        
+        details.innerHTML= text.Title + "<br>" + text.Plot + "<br>" + 
         " <b>Release date:</b> " + text.Released + " <b>Duration:</b> " + text.Runtime +
         " <b>Genre:</b> " + text.Genre + "<br>";
 
         /*Addind More button*/
+        var moreBtn=document.createElement("BUTTON");
+        moreBtn.setAttribute("id","moreBtn");
+        moreBtn.setAttribute("onclick","moreBtnClick()");
+        moreBtn.innerHTML="More";
         moreBtn.style.display = "block";
         details.appendChild(moreBtn);
 
         
         /*Adding Poster*/
+        if(text.Poster!=="N/A"){
         var poster=document.createElement("IMG");
 
         poster.setAttribute("src", text.Poster);
         
         details.appendChild(poster);
+        }
     }else if(searchtext.value===""){
+        /*Nothing to show ,empty search*/
         details.style.border = 'none';
         details.style.background="none";
         details.innerHTML="";
     }else{
+        /*Not available movie*/
         details.innerHTML="Sorry , There are no results for \" "+searchtext.value+" \"";
     }
 }
@@ -74,12 +72,20 @@ function updateDetails(request){
 /**
  * Change Text in button "moreBtn"
  */
+var active=false;
 function moreBtnClick(){
-    if(active === false){
-        moreBtn.innerHTML = "Λιγότερα";
+    var moreBtn=document.getElementById("moreBtn");
+    if(!active){
+        moreBtn.innerHTML = "Less";
         active = true;
     }else{
-        moreBtn.innerHTML = "Περισσότερα";
+        moreBtn.innerHTML = "More";
         active = false;
+    }
+}
+
+function printJSON(jsontext){
+    for(j in jsontext){
+        details.innerHTML+=j+": "+jsontext[j]+"<br>";
     }
 }
