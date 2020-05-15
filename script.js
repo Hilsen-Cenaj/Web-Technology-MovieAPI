@@ -4,13 +4,17 @@ var text;
 
 
 function learnMore(myFunction,fullplot=false){
-    
+    //Progress Indicator
+    var progressImg=document.createElement("IMG");
+    progressImg.src = 'progress.gif';
+	progressImg.alt = 'Please wait...';
     // set up a request
 	var request = new XMLHttpRequest();
     // keep track of the request
     request.onreadystatechange = function() {
         // check if the response data send back to us 
         if(request.readyState === 4) {
+            details.removeChild(progressImg)
             // add a border
             details.style.border = '1px solid rgb(160, 160, 160)';
             details.style.borderRadius="8px"
@@ -33,6 +37,7 @@ function learnMore(myFunction,fullplot=false){
     console.log("GET URL: "+url);
     request.open("GET",url);
     request.send();
+    details.insertBefore(progressImg,details.childNodes[2]);
     
 }
 

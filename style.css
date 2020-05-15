@@ -75,6 +75,7 @@ html,body{
    display:flex;
    flex-flow:column;
    padding:20px 0;
+   text-align: center;
 }
 
 /*Text retrieved from search*/
