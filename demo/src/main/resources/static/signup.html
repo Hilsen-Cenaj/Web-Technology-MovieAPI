@@ -17,7 +17,8 @@
             <a href="login.html">Login</a>
         </div>
         <div id="container">
-            <form class="wrapper" method="post" action="/signup">
+
+            <form id="signupForm" class="wrapper" modelAttribute="user" >
                 <h2>CREATE ACCOUNT</h2>
                
                 <input type="text" placeholder="Email" name="email" required>
@@ -29,7 +30,7 @@
                 <button id="btn-reset" type="reset">Reset</button>
             </form>
         </div>
-        <script src="script.js" type="text/javascript"></script>
+        <script src="signupscript.js" type="text/javascript"></script>
 
     </body>
 </html>

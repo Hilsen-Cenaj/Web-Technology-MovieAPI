@@ -1,0 +1,177 @@
+html,body{
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 18px;
+    height: 100%;
+    margin: 0;
+}
+
+.main-bar{
+    /*Bar attributes*/
+    width: 100%;
+    background-color: #3e474f;
+
+    /*Position*/
+    display:flex;
+    flex-flow: row wrap;
+    margin:0;
+    justify-content:flex-end;/*all buttons right*/
+}
+/*Only Home button left*/
+#homepage{
+    margin-right:auto;
+}
+/*Decorate links*/
+.main-bar a{
+    /*Text*/
+    display: inline-block;
+    padding: 15px 17px;
+    font-size: 20px;
+    font-weight: 600;
+    text-decoration: none;
+    color: white;   
+}
+
+.main-bar a:hover{
+    background-color: white;
+    border-radius: 10px;
+    color: #3e474f;
+    transition-duration: 0.5s;
+}
+
+/*Search bar*/
+#searchbar{
+
+    /*Bar attributes*/
+    width: 200px;
+    max-width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    border: none;
+    box-shadow: 1px 1px 5px grey;
+    background-color: white;
+    outline:none;
+
+    /*slow width change*/
+    transition: width .30s ease-in-out;
+
+    /*Text*/
+    font-size: 18px;
+    padding: 10px;
+    
+    /*Position*/
+    align-self: center;
+    margin:10px;
+    
+}
+
+/*Change box-shadow color and bar's width when focused*/
+#searchbar:focus{
+    box-shadow: 1px 1px 5px #3F00FF;
+    width:550px;
+}
+
+/*Flex container that wraps content*/
+#container{
+   display:flex;
+   flex-flow:column;
+   padding:20px 0;
+   text-align: center;
+}
+
+/*Text retrieved from search*/
+#details{
+    /*Text*/
+    word-wrap: break-word;
+    
+
+    /*Box Attributes*/
+    margin:20px;
+    padding:20px;
+    max-width: 100%;
+}
+
+img{
+    max-width: 100%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*Decorate more/less button*/
+#moreBtn{
+    width:max-content;
+    background-color: rgba(255, 0, 21, 0.658);
+    /*Align right*/
+    margin-right:0;
+    margin-left: auto;
+}
+/*Center and width of wrapper*/
+.wrapper{
+    border:1px solid rgb(160, 160, 160);
+    padding:20px;
+    width:300px;/*Needs change**************/
+    align-self: center;
+    border-radius: 8px;
+}
+
+.wrapper h2{
+    font-family: 'Segoe UI';
+    text-align: center;
+}
+
+
+input{
+    box-sizing : border-box;
+    padding:15px;
+    margin:10px 0;
+    width:100%;
+    background-color: rgb(219, 219, 219);
+    border:none;
+}
+.button{
+    /*Button decoration*/
+    box-shadow:1px 1px 5px grey;
+    /*Position and size*/
+    width:100%;
+    height:40px;
+    margin:10px 0 ;
+    /*Text*/
+    font-size: larger;
+    border-radius: 5px;
+    text-decoration: none;
+    border:none;
+    color:white;
+}
+/*Change colors of signup,login buttons*/
+.login{
+    background-color: #7289da;
+}
+.signup{
+    background-color: #72da77;
+}
+
+#btn-reset{
+    width:30%;
+    height:30px;
+    margin:10px 0 ;
+    border-radius: 5px;
+    text-decoration: none;
+    border:none;
+    background-color: #99aab5;
+}
+.login:hover,.signup:hover,#btn-reset:hover{
+    opacity: 0.8;
+}
+
+
+@media screen and (max-width: 600px){
+    .main-bar{
+        flex-flow:column wrap;
+        text-align: center;
+    }
+    /*Align with other items*/
+    #homepage{
+        margin-right: 0;
+    }
+
+}
