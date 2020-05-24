@@ -17,7 +17,7 @@
             <a href="login.html">Login</a>
         </div>
         <div id="container">
-            <form id="login_form" class="wrapper">
+            <form id="loginForm" class="wrapper" method="post" action="/user/bookmarks" modelAttribute="user">
                 <h2>LOGIN</h2>
                
                 <input type="text" placeholder="Email" name="email" required>
@@ -29,7 +29,5 @@
             </form>
 
         </div>
-        <script src="script.js" type="text/javascript"></script>
-
     </body>
 </html>

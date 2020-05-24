@@ -8,7 +8,13 @@ window.addEventListener( "load", function () {
 
         // Define what happens on successful data submission
         XHR.addEventListener( "load", function(event) {
-            alert( event.target.responseText );
+            alert(event.target.responseText);
+            if (XHR.status !== 400) {
+                var ask = window.confirm("Would you like to login?");
+                if (ask) {
+                    window.location.href = "login.html";
+                }
+            }
         } );
 
         // Define what happens in case of error
