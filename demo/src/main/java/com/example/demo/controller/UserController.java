@@ -1,5 +1,7 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.Bookmark;
+import com.example.demo.entity.BookmarkRepository;
 import com.example.demo.entity.User;
 import com.example.demo.entity.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,9 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.List;
 
 
 @RestController
@@ -22,7 +26,10 @@ public class UserController implements ErrorController {
     @Autowired
     private UserRepository userRepository;
 
-    @PostMapping(value = "/signup")
+    @Autowired
+    private BookmarkRepository bookmarkRepository;
+
+    @PostMapping(value = "/newuser")
     public ResponseEntity addNewUser(@ModelAttribute("user") User u) {
         try {
             userRepository.save(u);
@@ -33,6 +40,27 @@ public class UserController implements ErrorController {
 
     }
 
+    @GetMapping(value="/user")
+    public @ResponseBody ModelAndView index_login(){
+        return new ModelAndView("/index_login.html");
+    }
+
+    @GetMapping(value="/signup")
+    public @ResponseBody ModelAndView signup(){
+        return new ModelAndView("../static/signup.html");
+    }
+
+    @GetMapping(value="/login")
+    public @ResponseBody ModelAndView login(){
+        return new ModelAndView("../static/login.html");
+    }
+
+    @GetMapping(value="/logout")
+    public @ResponseBody ModelAndView logout(HttpSession session){
+        session.invalidate();
+        return new ModelAndView("../static/login.html");
+    }
+
     @GetMapping(path = "/users")
     public
     ModelAndView actions(Model model) throws IOException {
@@ -40,29 +68,48 @@ public class UserController implements ErrorController {
         return new ModelAndView("/users.html");
     }
 
-    @PostMapping(path = "/login")
-    public ResponseEntity getUser(@ModelAttribute("user") User u, HttpSession session) {
-        try {
-            User found = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
-            if (found != null) {
-                session.setAttribute("user", found);
-
-                return new ResponseEntity("Success", HttpStatus.OK);
-            }
-                return new ResponseEntity("Not found", HttpStatus.NOT_FOUND);
-        } catch (Exception e) {
-            return new ResponseEntity("Fail", HttpStatus.BAD_REQUEST);
-        }
+    @PostMapping(path="/user", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView setBookmarks(@ModelAttribute("user") User u, HttpServletRequest request, HttpSession session){
+           session.invalidate();
+        HttpSession newSession = request.getSession(); // create session
+            User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
+            List<Bookmark> bookmarks=bookmarkRepository.findBookmarksByUserid(newu.getId());
+            System.out.println(bookmarks.toString());
+                newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
+            return new ModelAndView("/index_login.html");
 
     }
 
-    @PostMapping(path="/user/bookmarks", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getBookmarks(@ModelAttribute("user") User u ,Model model ,HttpSession session){
+    @GetMapping(path="/user/bookmarks", produces = MediaType.TEXT_HTML_VALUE)
+    public ModelAndView getBookmarks(Model model , HttpServletRequest request, HttpSession session){
+        HttpSession newSession = request.getSession(); // create session
+        User u = (User) newSession.getAttribute("user");
+        User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
+        List<Bookmark> bookmarks=bookmarkRepository.findBookmarksByUserid(newu.getId());
+        System.out.println(bookmarks.toString());
+        model.addAttribute("user", newu);
+        model.addAttribute("bookmarks",bookmarks);
+        return new ModelAndView("/bookmarks.html");
 
-            User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
-                model.addAttribute("user", newu);
-                session.setAttribute("user", newu);//in Session attribute I save the user for the future
-            return new ModelAndView("/bookmarks.html");
+    }
+    @PostMapping(path="/user/bookmark/{code}")
+    public ResponseEntity<String> saveBookmarkByTitle(@ModelAttribute("title") String title, @PathVariable("code") String code, HttpServletRequest request){
+
+            HttpSession session = request.getSession();
+            System.out.println(session.getAttribute("user"));
+            User u = (User) session.getAttribute("user");
+            if(u!=null) {
+                Bookmark b = bookmarkRepository.findBookmarksByUseridAndTitle(u.getId(), title);
+                if (b == null){
+                    bookmarkRepository.save(new Bookmark(u.getId(), title, code));
+
+                    return new ResponseEntity("Success", HttpStatus.OK);
+                }else{
+                    return new ResponseEntity("Already exist", HttpStatus.OK);
+                }
+            }else{
+                return new ResponseEntity("Fail", HttpStatus.BAD_REQUEST);
+            }
 
     }
 

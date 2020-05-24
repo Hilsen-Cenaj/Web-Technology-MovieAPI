@@ -53,10 +53,16 @@ function updateDetails(request){
         title.textContent=text.Title;
         title.style.textAlign="center";
         details.appendChild(title);
+        var saveBtn=document.createElement("BUTTON");
+        saveBtn.innerHTML="Save Me";
+        saveBtn.setAttribute("class","button");
+        saveBtn.setAttribute("id","saveBtn")
+        saveBtn.setAttribute("onclick","sendData()");
+        details.appendChild(saveBtn);
 
         //Build Content
         var content=document.createElement("P");
-        content.setAttribute("id","content")
+        content.setAttribute("id","content");
         content.innerHTML= " <b>Release date:</b> " + text.Released + " <br><b>Duration:</b> " + text.Runtime +
         " <br><b>Genre:</b> " + text.Genre + "<br>" +text.Plot + "<br>" ;
         content.style.textAlign="right";
@@ -139,5 +145,33 @@ function printJSON(request){
         });
     }
 }
+
+
+
+    function sendData() {
+        const XHR = new XMLHttpRequest();
+
+        var title=document.getElementsByTagName("H2")[0];
+        var code=document.getElementById("searchbar").value;
+
+        console.log(title.innerHTML);
+        // Define what happens on successful data submission
+        XHR.addEventListener( "load", function(event) {
+            alert(event.target.responseText);
+
+        } );
+
+        // Define what happens in case of error
+        XHR.addEventListener( "error", function( event ) {
+            alert( 'Oops! Something went wrong.' );
+        } );
+
+        // Set up our request
+        XHR.open( "POST", "/user/bookmark/"+code);
+
+        XHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        // The data sent is what the user provided in the form
+        XHR.send("title="+title.innerHTML);
+    }
 
 

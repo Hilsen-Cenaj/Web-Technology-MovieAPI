@@ -11,13 +11,12 @@
     
     <body>
         <div class="main-bar">
-            <a id="homepage" title="Homepage" href="index.html">Home</a>
-            <a href="bookmarks.html">Bookmarks</a>
-            <a href="signup.html">Create Account</a>
-            <a href="login.html">Login</a>
+            <a id="homepage" title="Homepage" href="/">Home</a>
+            <a href="/signup">Create Account</a>
+            <a href="/login">Login</a>
         </div>
         <div id="container">
-            <form id="loginForm" class="wrapper" method="post" action="/user/bookmarks" modelAttribute="user">
+            <form id="loginForm" class="wrapper" method="post" action="/user" modelAttribute="user">
                 <h2>LOGIN</h2>
                
                 <input type="text" placeholder="Email" name="email" required>

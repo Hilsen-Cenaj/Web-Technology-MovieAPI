@@ -4,9 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookmarks</title>
+    <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}">
 </head>
 <body>
+<div class="main-bar">
+    <a id="homepage" title="Homepage" href="/user">Home</a>
+    <a href="/user/bookmarks">Bookmarks</a>
+    <a href="/logout">Logout</a>
+</div>
 <h2>Welcome user<span th:text="${user.id}"></span> </h2>
+<h3>Bookmarks</h3>
+<ul th:each="bookmark : ${bookmarks}">
+    <li th:text="${bookmark.title}">id</li>
+</ul>
 
 </body>
 </html>

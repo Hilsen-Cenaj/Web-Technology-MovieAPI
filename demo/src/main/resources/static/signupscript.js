@@ -12,7 +12,7 @@ window.addEventListener( "load", function () {
             if (XHR.status !== 400) {
                 var ask = window.confirm("Would you like to login?");
                 if (ask) {
-                    window.location.href = "login.html";
+                    window.location.href = "/login";
                 }
             }
         } );
@@ -23,7 +23,7 @@ window.addEventListener( "load", function () {
         } );
 
         // Set up our request
-        XHR.open( "POST", "/signup" );
+        XHR.open( "POST", "/newuser" );
 
         // The data sent is what the user provided in the form
         XHR.send( FD );
