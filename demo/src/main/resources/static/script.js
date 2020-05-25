@@ -14,10 +14,13 @@ function learnMore(myFunction,fullplot=false){
     request.onreadystatechange = function() {
         // check if the response data send back to us 
         if(request.readyState === 4) {
-            details.removeChild(progressImg)
+            //If progressImg has been initialized then remove it
+            if(details.contains(progressImg)) {
+                details.removeChild(progressImg);
+            }
             // add a border
             details.style.border = '1px solid rgb(160, 160, 160)';
-            details.style.borderRadius="8px"
+            details.style.borderRadius="8px";
             // check if the request is successful
             if(request.status === 200) {
                 // update the HTML of the element
@@ -65,7 +68,7 @@ function updateDetails(request){
         content.setAttribute("id","content");
         content.innerHTML= " <b>Release date:</b> " + text.Released + " <br><b>Duration:</b> " + text.Runtime +
         " <br><b>Genre:</b> " + text.Genre + "<br>" +text.Plot + "<br>" ;
-        content.style.textAlign="right";
+        content.style.textAlign="center";
         details.appendChild(content);
         
         /*Addind More button*/
@@ -80,14 +83,13 @@ function updateDetails(request){
         
         /*Adding Poster*/
         if(text.Poster!=="N/A"){
-        var poster=document.createElement("IMG");
-        
-        poster.setAttribute("src", text.Poster);
-        /*Errors when load the poster*/
-        poster.onerror= function(){
-            poster.alt="Error: could not load poster"
-        }
-        details.appendChild(poster);
+            var poster=document.createElement("IMG");
+            poster.setAttribute("src", text.Poster);
+            /*Errors when load the poster*/
+            poster.onerror= function(){
+                poster.alt="Error: could not load poster"
+            }
+            details.appendChild(poster);
         }
     }else if(searchtext.value===""){
         /*Nothing to show ,empty search*/

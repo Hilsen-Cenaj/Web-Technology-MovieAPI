@@ -4,7 +4,12 @@ html,body{
     height: 100%;
     margin: 0;
 }
-
+h2,h3,ul{
+    text-align: center;
+}
+ul{
+    list-style: none;
+}
 .main-bar{
     /*Bar attributes*/
     width: 100%;
@@ -113,6 +118,24 @@ img{
     margin-right:0;
     margin-left: auto;
 }
+li p .dltBtn{
+    display: inline;
+    padding:10px;
+}
+.dltBtn{
+
+    width:max-content;
+    background-color: rgba(115, 255, 214, 0.65);
+   font-size: 16px;
+    border-radius: 5px;
+    text-decoration: none;
+    border:none;
+    color:rgb(160, 160, 160);
+    margin:0 10px 0 10px;
+    /*Button decoration*/
+    box-shadow:1px 1px 5px grey;
+
+}
 /*Center and width of wrapper*/
 .wrapper{
     border:1px solid rgb(160, 160, 160);
@@ -120,6 +143,7 @@ img{
     width:300px;/*Needs change**************/
     align-self: center;
     border-radius: 8px;
+
 }
 
 .wrapper h2{

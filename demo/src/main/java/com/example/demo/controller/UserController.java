@@ -41,8 +41,10 @@ public class UserController implements ErrorController {
     }
 
     @GetMapping(value="/user")
-    public @ResponseBody ModelAndView index_login(){
-        return new ModelAndView("/index_login.html");
+    public @ResponseBody ModelAndView index_login(HttpServletRequest request){
+
+            return new ModelAndView("/index_login.html");
+
     }
 
     @GetMapping(value="/signup")
@@ -112,6 +114,26 @@ public class UserController implements ErrorController {
             }
 
     }
+
+    @DeleteMapping(path="/user/bookmark/{code}")
+    public ResponseEntity<String> deleteBookmarkByTitle(@ModelAttribute("title") String title, @PathVariable("code") String code, HttpServletRequest request){
+        HttpSession session = request.getSession();
+        System.out.println(session.getAttribute("user"));
+        User u = (User) session.getAttribute("user");
+        if(u!=null) {
+            Bookmark b = bookmarkRepository.findBookmarksByUseridAndTitle(u.getId(), title);
+            if (b != null){
+                bookmarkRepository.delete(new Bookmark(u.getId(), title, code));
+                return new ResponseEntity("Success", HttpStatus.OK);
+            }else{
+                return new ResponseEntity("Already deleted", HttpStatus.OK);
+            }
+        }else{
+            return new ResponseEntity("Fail", HttpStatus.BAD_REQUEST);
+        }
+    }
+
+
 
 //Building custom error page
 
