@@ -29,6 +29,9 @@ public class UserController implements ErrorController {
     @Autowired
     private BookmarkRepository bookmarkRepository;
 
+    /*
+    * Sign up New User
+    * */
     @PostMapping(value = "/newuser")
     public ResponseEntity addNewUser(@ModelAttribute("user") User u) {
         try {
@@ -40,12 +43,11 @@ public class UserController implements ErrorController {
 
     }
 
+    /*
+    * Change path (remove '.html')
+    * */
     @GetMapping(value="/user")
-    public @ResponseBody ModelAndView index_login(HttpServletRequest request){
-
-            return new ModelAndView("/index_login.html");
-
-    }
+    public @ResponseBody ModelAndView index_login(){ return new ModelAndView("/index_login.html"); }
 
     @GetMapping(value="/signup")
     public @ResponseBody ModelAndView signup(){
@@ -62,26 +64,29 @@ public class UserController implements ErrorController {
         session.invalidate();
         return new ModelAndView("../static/login.html");
     }
+    /*****************************/
 
-    @GetMapping(path = "/users")
-    public
-    ModelAndView actions(Model model) throws IOException {
-        model.addAttribute("users", userRepository.findAll());
-        return new ModelAndView("/users.html");
-    }
-
+    /*
+    * Log in User
+    * */
     @PostMapping(path="/user", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView setBookmarks(@ModelAttribute("user") User u, HttpServletRequest request, HttpSession session){
-           session.invalidate();
+        session.invalidate();
+
         HttpSession newSession = request.getSession(); // create session
-            User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
-            List<Bookmark> bookmarks=bookmarkRepository.findBookmarksByUserid(newu.getId());
-            System.out.println(bookmarks.toString());
-                newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
-            return new ModelAndView("/index_login.html");
+        User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
+        List<Bookmark> bookmarks=bookmarkRepository.findBookmarksByUserid(newu.getId());
+
+        System.out.println(bookmarks.toString());
+        newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
+
+        return new ModelAndView("/index_login.html");
 
     }
 
+    /*
+    * Go to Bookmarks Page
+    * */
     @GetMapping(path="/user/bookmarks", produces = MediaType.TEXT_HTML_VALUE)
     public ModelAndView getBookmarks(Model model , HttpServletRequest request, HttpSession session){
         HttpSession newSession = request.getSession(); // create session
@@ -94,6 +99,10 @@ public class UserController implements ErrorController {
         return new ModelAndView("/bookmarks.html");
 
     }
+
+    /*
+    * Save Movie to Bookmarks page
+    * */
     @PostMapping(path="/user/bookmark/{code}")
     public ResponseEntity<String> saveBookmarkByTitle(@ModelAttribute("title") String title, @PathVariable("code") String code, HttpServletRequest request){
 
@@ -133,7 +142,12 @@ public class UserController implements ErrorController {
         }
     }
 
-
+    @GetMapping(path = "/users")
+    public
+    ModelAndView actions(Model model) throws IOException {
+        model.addAttribute("users", userRepository.findAll());
+        return new ModelAndView("/users.html");
+    }
 
 //Building custom error page
 

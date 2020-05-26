@@ -150,30 +150,30 @@ function printJSON(request){
 
 
 
-    function sendData() {
-        const XHR = new XMLHttpRequest();
+function sendData() {
+    const XHR = new XMLHttpRequest();
 
-        var title=document.getElementsByTagName("H2")[0];
-        var code=document.getElementById("searchbar").value;
+    var title=document.getElementsByTagName("H2")[0];
+    var code=document.getElementById("searchbar").value;
 
-        console.log(title.innerHTML);
-        // Define what happens on successful data submission
-        XHR.addEventListener( "load", function(event) {
-            alert(event.target.responseText);
+    console.log(title.innerHTML);
+    // Define what happens on successful data submission
+    XHR.addEventListener( "load", function(event) {
+        alert(event.target.responseText);
 
-        } );
+    } );
 
-        // Define what happens in case of error
-        XHR.addEventListener( "error", function( event ) {
-            alert( 'Oops! Something went wrong.' );
-        } );
+    // Define what happens in case of error
+    XHR.addEventListener( "error", function( event ) {
+        alert( 'Oops! Something went wrong.' );
+    } );
 
-        // Set up our request
-        XHR.open( "POST", "/user/bookmark/"+code);
+    // Set up our request
+    XHR.open( "POST", "/user/bookmark/"+code);
 
-        XHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-        // The data sent is what the user provided in the form
-        XHR.send("title="+title.innerHTML);
-    }
+    XHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    // The data sent is what the user provided in the form
+    XHR.send("title="+title.innerHTML);
+}
 
 

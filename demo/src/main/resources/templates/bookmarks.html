@@ -18,7 +18,8 @@
     <li>
         <span  th:text="${bookmark.title}">id</span>
             <span>
-            <button class="dltBtn"  th:code="${bookmark.code}" th:title="${bookmark.title}" >Delete</button>
+                <button class="dltBtn"  th:code="${bookmark.code}" th:title="${bookmark.title}" >Delete</button>
+                <button class="moreBtnBookmark" th:title="${bookmark.title}">More</button>
             </span>
 
     </li>
