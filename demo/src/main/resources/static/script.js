@@ -1,6 +1,6 @@
 var searchtext=document.getElementById("searchbar");
 var details=document.getElementById("details");
-var text;
+var text;//JSON response from XHRequest
 
 
 function learnMore(myFunction,fullplot=false){
@@ -8,13 +8,15 @@ function learnMore(myFunction,fullplot=false){
     var progressImg=document.createElement("IMG");
     progressImg.src = 'progress.gif';
 	progressImg.alt = 'Please wait...';
+
     // set up a request
 	var request = new XMLHttpRequest();
+
     // keep track of the request
     request.onreadystatechange = function() {
         // check if the response data send back to us 
         if(request.readyState === 4) {
-            //If progressImg has been initialized then remove it
+            //If progressImg has been initialized then remove it else don't remove it
             if(details.contains(progressImg)) {
                 details.removeChild(progressImg);
             }
@@ -23,7 +25,8 @@ function learnMore(myFunction,fullplot=false){
             details.style.borderRadius="8px";
             // check if the request is successful
             if(request.status === 200) {
-                // update the HTML of the element
+                //myFunction is updateDetails for nonfull plot
+                //myFunction is printJSON for full plot
                 myFunction(request);
             }
             else {
@@ -56,10 +59,12 @@ function updateDetails(request){
         title.textContent=text.Title;
         title.style.textAlign="center";
         details.appendChild(title);
+
+        //Make a Save Button
         var saveBtn=document.createElement("BUTTON");
         saveBtn.innerHTML="Save Me";
         saveBtn.setAttribute("class","button");
-        saveBtn.setAttribute("id","saveBtn")
+        saveBtn.setAttribute("id","saveBtn");
         saveBtn.setAttribute("onclick","sendData()");
         details.appendChild(saveBtn);
 
@@ -83,13 +88,19 @@ function updateDetails(request){
         
         /*Adding Poster*/
         if(text.Poster!=="N/A"){
-            var poster=document.createElement("IMG");
-            poster.setAttribute("src", text.Poster);
-            /*Errors when load the poster*/
-            poster.onerror= function(){
-                poster.alt="Error: could not load poster"
-            }
-            details.appendChild(poster);
+            new Promise(function(resolve, reject){
+                var poster=document.createElement("IMG");
+                poster.src=text.Poster;
+                poster.onload=resolve(poster);
+                /*Errors when load the poster*/
+                poster.onerror=reject(poster);
+
+            })
+                .then(poster=>details.appendChild(poster))
+                .catch(error => {
+                    poster.alt="Failed to load poster";
+                    details.appendChild(poster);
+                });
         }
     }else if(searchtext.value===""){
         /*Nothing to show ,empty search*/
@@ -105,7 +116,7 @@ function updateDetails(request){
 /**
  * Change Text in button "moreBtn"
  */
-var active=false;
+var active=false;//checks if it is "MORE" or "LESS"
 function moreBtnClick(){
     var moreBtn=document.getElementById("moreBtn");
     if(!active){
@@ -127,7 +138,7 @@ function printJSON(request){
     var content=document.getElementById("content");
     content.innerHTML=""; //Clear Content
     for(j in jsontext){
-        //Exclude Everything with N/A , Poster , Response , Ratings ,Title , Plot
+        //Exclude Everything with N/A , Poster , Response , Ratings ,Title , Plot because they are already written
         if(jsontext[j]!=="N/A" && j!=="Poster" && j!=="Response" && j!="Ratings" &&j!=="Title" && j!=="Plot" ){
             content.innerHTML+="<b>"+j+"</b>"+": "+jsontext[j]+"<br>";
         }
@@ -139,6 +150,7 @@ function printJSON(request){
     var ratings=jsontext["Ratings"];
     if(ratings.length!==0){
         content.innerHTML+="<br><b>Ratings: </b><br>";
+        //Access each Object from rating
         ratings.forEach(element => {
             for(i in element){
                 content.innerHTML+="<b>"+i+"</b>"+": "+element[i]+" ";

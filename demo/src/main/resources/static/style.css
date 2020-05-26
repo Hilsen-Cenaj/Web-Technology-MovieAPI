@@ -4,11 +4,9 @@ html,body{
     height: 100%;
     margin: 0;
 }
-h2,h3,ul{
-    text-align: center;
-}
 ul{
-    list-style: none;
+    list-style-type: none;
+    padding:0;
 }
 .main-bar{
     /*Bar attributes*/
@@ -84,17 +82,15 @@ ul{
 }
 
 /*Text retrieved from search*/
-#details{
+.description{
     /*Text*/
     word-wrap: break-word;
-    
-
     /*Box Attributes*/
     margin:20px;
     padding:20px;
     max-width: 100%;
 }
-
+/*Images position */
 img{
     max-width: 100%;
     display: block;
@@ -110,7 +106,7 @@ img{
     margin-right:0;
     margin-left: auto;
 }
-
+/*Decorate save Button*/
 #saveBtn{
     width:max-content;
     background-color: rgba(161, 56, 255, 0.65);
@@ -118,12 +114,13 @@ img{
     margin-right:0;
     margin-left: auto;
 }
+/*************** My bookmarks page **********/
+/*Same line in bookmarks li p and buttons*/
 li p .dltBtn{
     display: inline;
     padding:10px;
 }
 .dltBtn{
-
     width:max-content;
     background-color: rgba(115, 255, 214, 0.65);
     font-size: 16px;
@@ -149,8 +146,10 @@ li p .dltBtn{
     /*Button decoration*/
     box-shadow:1px 1px 5px grey;
 }
+/*****************/
 
-/*Center and width of wrapper*/
+/***********Log in and Sign up Pages ************/
+/*Center and width of wrapper(login and signup)*/
 .wrapper{
     border:1px solid rgb(160, 160, 160);
     padding:20px;
@@ -174,6 +173,7 @@ input{
     background-color: rgb(219, 219, 219);
     border:none;
 }
+/*Buttons at signup and login*/
 .button{
     /*Button decoration*/
     box-shadow:1px 1px 5px grey;
@@ -208,9 +208,10 @@ input{
 .login:hover,.signup:hover,#btn-reset:hover{
     opacity: 0.8;
 }
-
+/*****************/
 
 @media screen and (max-width: 600px){
+    /*vertical align for smaller screens*/
     .main-bar{
         flex-flow:column wrap;
         text-align: center;

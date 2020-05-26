@@ -1,3 +1,4 @@
+/***Deleting a bookmark***/
 var button=document.getElementsByClassName("dltBtn");
 for (var i = 0; i < button.length; i++) {
     button[i].addEventListener("click",function () {
@@ -9,49 +10,55 @@ for (var i = 0; i < button.length; i++) {
 
 function deleteBtn(code,title){
     const XHR = new XMLHttpRequest();
-
-
-    // Define what happens on successful data submission
+    //Successful data sending
     XHR.addEventListener( "load", function(event) {
-        alert(event.target.responseText);
+        alert(event.target.responseText);// Display response from XHR
         if (XHR.status !== 400) {
-                window.location.reload();
+                window.location.reload();//Reload user/bookmarks since we deleted an item
         }
     } );
 
-    // Define what happens in case of error
+    //Alert error message
     XHR.addEventListener( "error", function( event ) {
         alert( 'Oops! Something went wrong.' );
     } );
 
-    // Set up our request
+    // Set up our request for Delete
     XHR.open( "DELETE", "/user/bookmark/"+code);
+    //Using this to read correct the body of XHR
     XHR.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    // The data sent is what the user provided in the form
+
     XHR.send("title="+title);
 }
 
-
+/***Display more information about a title***/
 var moreBtn=document.getElementsByClassName("moreBtnBookmark");
-var text;
-var active=false;
 
 for (var i = 0; i < moreBtn.length; i++) {
+    //Make an attribute at "more" button to save if it shows already the details
+    moreBtn[i].setAttribute("active","false");
+
     moreBtn[i].addEventListener("click",function () {
+        var title=this.getAttribute("title");//Saves the title
+        var active=this.getAttribute("active");//Saves if it is active
 
-        if(!active){
+        if(active === "false"){
+            //if active = false the make a div element with id = title
             var details=document.createElement("div");
-            var title=this.getAttribute("title");
+            details.setAttribute("id", title);
+            details.setAttribute("class", "description");
+            //insert this div
             this.parentNode.insertBefore(details, this.nextSibling);
-            details.setAttribute("id", "details");
-
             this.innerHTML = "Hide";
+            this.setAttribute("active","true");//active=true
+
             learnMore(title, details);
-            active = true;
+
         }else {
             this.innerHTML = "More";
-            document.getElementById("details").remove();
-            active = false;
+            //remove div element with id=title
+            document.getElementById(title).remove();
+            this.setAttribute("active","false");//active=false
         }
 
     });
@@ -62,16 +69,18 @@ for (var i = 0; i < moreBtn.length; i++) {
 function learnMore(title, details){
     //Progress Indicator
     var progressImg=document.createElement("IMG");
-    progressImg.src = '../static/images/progress.gif';
-    progressImg.setAttribute("th:src","@{images/progress.gif}");
+    progressImg.src = '/progress.gif';
+    progressImg.setAttribute("th:src","@{/progress.gif}");
     progressImg.alt = 'Please wait...';
+
     // set up a request
     var request = new XMLHttpRequest();
+
     // keep track of the request
     request.onreadystatechange = function() {
         // check if the response data send back to us
         if(request.readyState === 4) {
-            //If progressImg has been initialized then remove it
+            //If progressImg has been initialized then remove it else don't remove it
             if(details.contains(progressImg)) {
                 details.removeChild(progressImg);
             }
@@ -92,16 +101,17 @@ function learnMore(title, details){
 
     var url="http://www.omdbapi.com/?apikey=edde99b1&t="+title+"&plot=full";
 
-    //Adding plot=full on parameters if fullplot=true
     console.log("GET URL: "+url);
     request.open("GET",url);
     request.send();
+    //Add progressIMG while waiting for response
     details.insertBefore(progressImg,details.childNodes[2]);
 
 }
 
 function updateDetails(request, details){
-    text=JSON.parse(request.responseText);
+    //text holds the Json response
+    var text=JSON.parse(request.responseText);
 
     //Clear content before writing
     details.innerHTML="";
@@ -111,6 +121,7 @@ function updateDetails(request, details){
     content.setAttribute("id","content");
     content.innerHTML= " <b>Release date:</b> " + text.Released + " <br><b>Duration:</b> " + text.Runtime +
         " <br><b>Genre:</b> " + text.Genre + "<br>" +text.Plot + "<br>" ;
+
     //Adding Rattings
     var ratings=text["Ratings"];
     if(ratings.length!==0){
@@ -125,15 +136,20 @@ function updateDetails(request, details){
     content.style.textAlign="center";
     details.appendChild(content);
 
-
-    /*Adding Poster*/
+    /*Adding Poster with promises*/
     if(text.Poster!=="N/A"){
-        var poster=document.createElement("IMG");
-        poster.setAttribute("src", text.Poster);
-        /*Errors when load the poster*/
-        poster.onerror= function(){
-            poster.alt="Error: could not load poster"
-        }
-        details.appendChild(poster);
+        new Promise(function(resolve, reject){
+            var poster=document.createElement("IMG");
+            poster.src=text.Poster;
+            poster.onload=resolve(poster);
+            /*Errors when load the poster*/
+            poster.onerror=reject(poster);
+
+        })
+            .then(poster=>details.appendChild(poster))
+            .catch(error => {
+                poster.alt="Failed to load poster";
+                details.appendChild(poster);
+            });
     }
 }

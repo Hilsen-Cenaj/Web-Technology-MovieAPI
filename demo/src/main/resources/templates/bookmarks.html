@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Bookmarks</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="../static/style.css" th:href="@{/style.css}">
 </head>
 <body>
@@ -12,18 +13,19 @@
     <a href="/user/bookmarks">Bookmarks</a>
     <a href="/logout">Logout</a>
 </div>
-<h2>Welcome user<span th:text="${user.id}"></span> </h2>
-<h3>Bookmarks</h3>
-<ul th:each="bookmark : ${bookmarks}">
-    <li>
-        <span  th:text="${bookmark.title}">id</span>
+<div id="container">
+    <h2>Welcome user<span th:text="${user.id}"></span> </h2>
+    <h3>Bookmarks</h3>
+    <ul th:each="bookmark : ${bookmarks}">
+        <li>
+            <span  th:text="${bookmark.title}">id</span>
             <span>
-                <button class="dltBtn"  th:code="${bookmark.code}" th:title="${bookmark.title}" >Delete</button>
-                <button class="moreBtnBookmark" th:title="${bookmark.title}">More</button>
+                    <button class="dltBtn"  th:code="${bookmark.code}" th:title="${bookmark.title}" >Delete</button>
+                    <button class="moreBtnBookmark" th:title="${bookmark.title}">More</button>
             </span>
-
-    </li>
-</ul>
+        </li>
+    </ul>
+</div>
 <script src="../static/bookmarksscript.js" th:src="@{/bookmarksscript.js}"></script>
 </body>
 </html>

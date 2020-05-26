@@ -16,7 +16,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.List;
 
 
@@ -75,9 +74,7 @@ public class UserController implements ErrorController {
 
         HttpSession newSession = request.getSession(); // create session
         User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
-        List<Bookmark> bookmarks=bookmarkRepository.findBookmarksByUserid(newu.getId());
-
-        System.out.println(bookmarks.toString());
+        
         newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
 
         return new ModelAndView("/index_login.html");
@@ -114,12 +111,12 @@ public class UserController implements ErrorController {
                 if (b == null){
                     bookmarkRepository.save(new Bookmark(u.getId(), title, code));
 
-                    return new ResponseEntity("Success", HttpStatus.OK);
+                    return new ResponseEntity("Success!", HttpStatus.OK);
                 }else{
-                    return new ResponseEntity("Already exist", HttpStatus.OK);
+                    return new ResponseEntity("Already exist!", HttpStatus.OK);
                 }
             }else{
-                return new ResponseEntity("Fail", HttpStatus.BAD_REQUEST);
+                return new ResponseEntity("Fail. You should login first!", HttpStatus.BAD_REQUEST);
             }
 
     }
@@ -142,12 +139,6 @@ public class UserController implements ErrorController {
         }
     }
 
-    @GetMapping(path = "/users")
-    public
-    ModelAndView actions(Model model) throws IOException {
-        model.addAttribute("users", userRepository.findAll());
-        return new ModelAndView("/users.html");
-    }
 
 //Building custom error page
 
