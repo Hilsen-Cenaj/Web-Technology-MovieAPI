@@ -74,23 +74,18 @@ public class UserController implements ErrorController {
     * Log in User
     * */
     @PostMapping(path="/user", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView setBookmarks(@ModelAttribute("user") User u, HttpServletRequest request, HttpSession session,Model model){
+    public ResponseEntity<String> setBookmarks(@ModelAttribute("user") User u, HttpServletRequest request, HttpSession session,Model model){
         session.invalidate();
 
         HttpSession newSession = request.getSession(); // create session
 
             User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
             if(newu==null){
-                model.addAttribute("status","500. Bad Credentials");
-                return new ModelAndView("/errorpage.html");
+                return new ResponseEntity("Bad credentials!", HttpStatus.BAD_REQUEST);
             }
             newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
 
-            return new ModelAndView("/index_login.html");
-
-
-
-
+        return new ResponseEntity("Success!", HttpStatus.OK);
     }
 
     /*

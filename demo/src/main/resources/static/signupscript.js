@@ -1,18 +1,17 @@
 /***Post Form Data***/
-function sendData() {
+function sendData(myform,myFunction,url) {
     const XHR = new XMLHttpRequest();
 
     // Bind the FormData object and the form element
-    const FD = new FormData( form );
+    const FD = new FormData( myform );
 
     //Succeful Data Sending
     XHR.addEventListener( "load", function(event) {
-        alert(event.target.responseText);
-        if (XHR.status !== 400) {
-            var ask = window.confirm("Would you like to login?");
-            if (ask) {
-                window.location.href = "/login";
-            }
+
+        if (XHR.status === 200 ) {
+            myFunction(XHR);
+        }else{
+            alert(event.target.responseText);
         }
     } );
 
@@ -20,7 +19,7 @@ function sendData() {
     XHR.addEventListener( "error", function( event ) {
         alert( 'Oops! Something went wrong.' );
     } );
-    XHR.open( "POST", "/newuser" );
+    XHR.open( "POST", url );
     //Send Form Data
     XHR.send( FD );
 }
@@ -29,8 +28,26 @@ const form = document.getElementById( "signupForm" );
 if(form) {
     form.addEventListener("submit", function (event) {
         event.preventDefault();
-        sendData();
+        sendData(this,responseSignup,"/newuser");
     });
+}
+
+function responseSignup(XHR){
+    alert(XHR.responseText);
+    var ask = window.confirm("Would you like to login?");
+    if (ask) {
+        window.location.href = "/login";
+    }
+}
+const formlogin = document.getElementById( "loginForm" );
+if(formlogin) {
+    formlogin.addEventListener("submit", function (event) {
+        event.preventDefault();
+        sendData(this,responseLogin,"/user");
+    });
+}
+function responseLogin(XHR){
+        window.location.href = "/user";
 }
 /***Display Email Warning when it doesn't have the correct form***/
 var email=document.querySelector("input[type=email]");
