@@ -46,7 +46,12 @@ public class UserController implements ErrorController {
     * Change path (remove '.html')
     * */
     @GetMapping(value="/user")
-    public @ResponseBody ModelAndView index_login(){ return new ModelAndView("/index_login.html"); }
+    public @ResponseBody ModelAndView index_login(HttpServletRequest request) {
+        HttpSession newSession = request.getSession();
+        User u = (User) newSession.getAttribute("user");
+        User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
+        return new ModelAndView("/index_login.html");
+    }
 
     @GetMapping(value="/signup")
     public @ResponseBody ModelAndView signup(){
@@ -69,15 +74,22 @@ public class UserController implements ErrorController {
     * Log in User
     * */
     @PostMapping(path="/user", produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView setBookmarks(@ModelAttribute("user") User u, HttpServletRequest request, HttpSession session){
+    public ModelAndView setBookmarks(@ModelAttribute("user") User u, HttpServletRequest request, HttpSession session,Model model){
         session.invalidate();
 
         HttpSession newSession = request.getSession(); // create session
-        User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
-        
-        newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
 
-        return new ModelAndView("/index_login.html");
+            User newu = userRepository.findUserByEmailAndPassword(u.getEmail(), u.getPassword());
+            if(newu==null){
+                model.addAttribute("status","500. Bad Credentials");
+                return new ModelAndView("/errorpage.html");
+            }
+            newSession.setAttribute("user", newu);//in Session attribute I save the user for the future
+
+            return new ModelAndView("/index_login.html");
+
+
+
 
     }
 

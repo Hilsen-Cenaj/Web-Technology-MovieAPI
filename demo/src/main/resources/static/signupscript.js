@@ -26,12 +26,12 @@ function sendData() {
 }
 
 const form = document.getElementById( "signupForm" );
-
-form.addEventListener( "submit", function ( event ) {
-    event.preventDefault();
-    sendData();
-} );
-
+if(form) {
+    form.addEventListener("submit", function (event) {
+        event.preventDefault();
+        sendData();
+    });
+}
 /***Display Email Warning when it doesn't have the correct form***/
 var email=document.querySelector("input[type=email]");
 var displayWarningEmail=document.createElement("DIV");
